@@ -1,24 +1,97 @@
-<form action="/" method="post" enctype="multipart/form-data">
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
 
+<body>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <div class="container">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>Code</h3>
+                <div class="form-group">
+                    <div class="input-group input-file" name="Fichier1">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-choose" type="button">Choose</button>
+                        </span>
+                        <input type="text" class="form-control" placeholder='Choose a file...' />
+                        <span class="input-group-btn">
+                            <button class="btn btn-warning btn-reset" type="button">Reset</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                <div class="form-group">
+                    <label for="sel1">Select language:</label>
+                    <select class="form-control" id="sel1" name="lang">
+                        <option value="c/c++">C/C++</option>
+                        <option value="java">Java</option>
+                        <option value="js">JS</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                <h3>Screen Shot</h3>
+                <div class="form-group">
+                    <div class="input-group input-file" name="Fichier2">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-choose" type="button">Choose</button>
+                        </span>
+                        <input type="text" accept="image/*" class="form-control" placeholder='Choose a file...' />
+                        <span class="input-group-btn">
+                            <button class="btn btn-warning btn-reset" type="button">Reset</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                    <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+            </div>
+            
+            
+        </div>
+    </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script>
+        function bs_input_file() {
+            $(".input-file").before(
+                function () {
+                    if (!$(this).prev().hasClass('input-ghost')) {
+                        var element = $("<input type='file' class='input-ghost' style='visibility:hidden; height:0'>");
+                        element.attr("name", $(this).attr("name"));
+                        element.change(function () {
+                            element.next(element).find('input').val((element.val()).split('\\').pop());
+                        });
+                        $(this).find("button.btn-choose").click(function () {
+                            element.click();
+                        });
+                        $(this).find("button.btn-reset").click(function () {
+                            element.val(null);
+                            $(this).parents(".input-file").find('input').val('');
+                        });
+                        $(this).find('input').css("cursor", "pointer");
+                        $(this).find('input').mousedown(function () {
+                            $(this).parents('.input-file').prev().click();
+                            return false;
+                        });
+                        return element;
+                    }
+                }
+            );
+        }
+        $(function () {
+            bs_input_file();
+        });
+    </script>
+</body>
 
-
-    Code:<input type="file" name="code_id"><br>
-
-
-    Select Langiage:
-    <select name="lang">
-        <option value="java">Java</option>
-        <option value="c/c++" selected>C/C++</option>
-        <option value="JS">JS</option>s
-    </select>
-
-    Output<input type="file" name="output_code" accept="image/*"><br>
-
-
-
-
-
-
-    <input type="submit">
-</form>
+</html>

@@ -3,7 +3,7 @@ var router = express.Router();
 var path = require('path');
 
 const multer  = require('multer')
-
+const empty = require('empty-folder')
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -29,19 +29,32 @@ router.get('/', function(req, res, next) {
 router.post('/', upload.any(),function(req, res, next) {
 
     let lang = req.body.lang;
-    let beautifier  = require('../serivce/formatter/beatutifier')(lang);
+    let beautifier  = require('../service/formatter/beautifier')(lang);
+    let pdfGenerator = require('../service/pdf/pdf').pdfGenerator;
 
-    beautifier(req.files[0].path)
-      .then((fileLoc) => {
-        console.log(fileLoc);
+    let fileLoc = beautifier(req.files[0].path)
+      
+    pdfGenerator([fileLoc,req.files[1].path])
+      .then((pdfFileLoc) => {
+        res.download(pdfFileLoc);
+        return pdfFileLoc;
+      })
+      .then((pdfFileLoc) => {
+        setTimeout(() => {
+          empty(path.dirname(pdfFileLoc),false,()=>{});
+          empty(path.dirname(req.files[1].path),false,()=>{});
+          empty(path.dirname(req.files[0].path),false,()=>{});
+        },2000);
       })
       .catch((err) => {
-        console.log(err);
+        
       });
 
       
 
 });
+
+
 
 
 module.exports = router;
