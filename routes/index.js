@@ -44,10 +44,10 @@ router.post('/', upload.any(),function(req, res, next) {
           empty(path.dirname(pdfFileLoc),false,()=>{});
           empty(path.dirname(req.files[1].path),false,()=>{});
           empty(path.dirname(req.files[0].path),false,()=>{});
-        },2000);
+        },5000);
       })
       .catch((err) => {
-        
+        console.log(err);
       });
 
       
